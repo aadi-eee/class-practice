@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Class practice | Aaditi</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif&family=Pinyon+Script&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --cream: #fbf1e6;
+      --ink: #2a1b1b;
+      --maroon: #6b0f1a;
+      --pink: #f4a6c4;
+      --butter: #fbeaa0;
+      --mint: #cfe9c8;
+      --sky: #d5ecf9;
+    }
+    *, *::before, *::after { box-sizing: border-box; }
+    body {
+      margin: 0;
+      background: var(--cream);
+      color: var(--ink);
+      font-family: "Instrument Serif", Georgia, serif;
+      font-size: 20px;
+      line-height: 1.5;
+    }
+    .wrap { max-width: 900px; margin: 0 auto; padding: 48px 6%; }
+    .back { color: var(--maroon); font-size: 18px; }
+    .kicker { opacity: 0.7; font-size: 16px; margin: 16px 0 0; }
+    h1 { font-weight: 400; font-size: clamp(40px, 6vw, 64px); margin: 8px 0 12px; }
+    .script { font-family: "Pinyon Script", cursive; color: var(--maroon); font-weight: 400; }
+
+    .progress { display: flex; align-items: center; gap: 12px; margin-bottom: 40px; }
+    .progress-bar { flex: 1; height: 14px; border: 2px solid var(--ink); border-radius: 999px; background: #fff; overflow: hidden; }
+    .progress-fill { height: 100%; width: 0; background: var(--pink); transition: width 0.3s ease; }
+
+    .card {
+      background: #fff;
+      padding: 24px 26px 22px;
+      margin-bottom: 36px;
+      box-shadow: 0 8px 18px rgba(0, 0, 0, 0.18);
+      border-top: 8px solid var(--pink);
+      transition: transform 0.25s ease, box-shadow 0.25s ease, opacity 0.25s ease;
+    }
+    .card:nth-child(odd) { transform: rotate(-1deg); }
+    .card:nth-child(even) { transform: rotate(1deg); }
+    .card:hover { transform: rotate(0deg) translateY(-6px) scale(1.01); box-shadow: 0 16px 32px rgba(0, 0, 0, 0.25); }
+    .card.done { opacity: 0.6; border-top-color: var(--mint); }
+    .card.done h2 { text-decoration: line-through; }
+
+    .head { display: flex; align-items: center; gap: 14px; }
+    .badge { flex-shrink: 0; background: var(--butter); border: 2px solid var(--ink); border-radius: 8px; padding: 2px 10px; font-size: 18px; }
+    .card h2 { font-weight: 400; font-size: 30px; color: var(--maroon); margin: 0; flex: 1; }
+    .check { display: flex; align-items: center; gap: 6px; font-size: 17px; cursor: pointer; user-select: none; }
+    .check input { width: 20px; height: 20px; accent-color: var(--maroon); }
+
+    .file { display: inline-block; margin: 12px 0 4px; padding: 2px 10px; border-radius: 999px; border: 1px solid var(--ink); font-size: 15px; }
+    .goal { margin: 10px 0 0; }
+
+    details { margin-top: 12px; }
+    summary { cursor: pointer; font-weight: bold; }
+    pre { background: #1e1a1a; color: #f5e9e3; padding: 14px; border-radius: 8px; overflow-x: auto; font-size: 15px; }
+
+    .output-label { margin: 16px 0 6px; font-size: 16px; opacity: 0.75; }
+    .output { border: 2px dashed var(--ink); border-radius: 10px; padding: 16px; background: #fffdf8; }
+    .output p { margin: 8px 0; }
+
+    .greeting { font-size: 26px; font-weight: 700; border: 2px dashed var(--ink); border-radius: 10px; padding: 12px 16px; margin: 10px 0; }
+
+    .mini { border: 2px solid var(--ink); border-radius: 10px; padding: 14px 16px; margin: 10px 0; background: #fff; }
+    .mini h4 { margin: 0 0 8px; font-size: 24px; font-weight: 400; color: var(--maroon); border-bottom: 2px dashed var(--ink); padding-bottom: 6px; }
+    .mini p, .mini ul { margin: 6px 0; font-size: 18px; }
+
+    .pcard { border: 2px solid var(--ink); border-radius: 10px; padding: 14px; margin: 10px 0; background: #fff; }
+    .pcard h4 { margin: 8px 0 2px; font-size: 22px; font-weight: 400; color: var(--maroon); }
+    .pcard p { margin: 2px 0; font-size: 17px; }
+    .pcard a { font-size: 16px; color: var(--maroon); }
+    .avatar-ph { width: 80px; height: 80px; border-radius: 50%; background: var(--pink); display: flex; align-items: center; justify-content: center; font-size: 36px; color: #fff; }
+
+    .notif-list { list-style: none; padding: 0; margin: 10px 0; }
+    .notif-list li { border: 2px solid var(--ink); border-radius: 10px; padding: 10px 14px; margin: 8px 0; background: #fff; font-size: 19px; }
+    .notif-list li span { margin-right: 8px; }
+    .n-success { background: var(--mint); }
+    .n-warning { background: var(--butter); }
+    .n-info { background: var(--sky); }
+
+    .product { border: 2px solid var(--ink); border-radius: 10px; padding: 14px 16px; margin: 10px 0; background: #fff; }
+    .product h4 { margin: 0 0 6px; font-size: 22px; font-weight: 400; color: var(--maroon); }
+    .product .price { font-size: 18px; margin: 2px 0; }
+    .product .stars { font-size: 18px; letter-spacing: 2px; color: var(--maroon); }
+    .product .stock { font-size: 16px; margin: 6px 0 0; }
+    .product.sold-out { opacity: 0.5; }
+    .in { color: #2e7d32; }
+    .out { color: #b71c1c; font-weight: bold; }
+
+    .plain { margin: 10px 0; padding-left: 22px; font-size: 19px; }
+
+    .alert { border-radius: 10px; padding: 10px 14px; margin: 10px 0; border: 2px solid var(--ink); font-size: 18px; }
+    .alert-error { background: #f9d0d0; }
+    .alert-success { background: var(--mint); }
+    .login-btn {
+      font: inherit; font-size: 18px; padding: 8px 18px; margin-top: 8px;
+      border: 2px solid var(--maroon); border-radius: 999px;
+      background: var(--maroon); color: #fff; cursor: pointer;
+    }
+    .login-btn:hover { background: #fff; color: var(--maroon); }
+
+    .result { margin: 12px 0 0; }
+
+    @media (prefers-reduced-motion: reduce) {
+      .card, .progress-fill { transition: none; }
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <a class="back" href="https://aadi-eee.github.io/">← Back to my assignments</a>
+    <p class="kicker">Web Programming · Week 11 · K0126_002</p>
+    <h1>Class <span class="script">practice</span></h1>
+
+    <div class="progress" aria-live="polite">
+      <span id="count">0 of 8 done</span>
+      <div class="progress-bar"><div id="fill" class="progress-fill"></div></div>
+    </div>
+
+    <main id="tasks"></main>
+  </div>
+
+  <script>
+    const tasks = [
+      {
+        id: "e1",
+        badge: "E1",
+        title: "Your first component",
+        file: "Greeting.jsx",
+        goal: "Write one function that returns JSX and use it more than once.",
+        code: "function Greeting() {\n  return <p>Hello, World!</p>;\n}\n\n<Greeting />\n<Greeting />\n<Greeting />",
+        output: '<p class="greeting">Hello, World!</p><p class="greeting">Hello, World!</p><p class="greeting">Hello, World!</p>',
+        result: "Three separate Hello, World! lines, one per use of the component."
+      },
+      {
+        id: "e2",
+        badge: "E2",
+        title: "StudentCard (fill in the blanks)",
+        file: "StudentCard.jsx",
+        goal: "Complete the card so it works with name, id and major props.",
+        code: "function StudentCard({ name, id, major }) {\n  return (\n    <div>\n      <h3>{name}</h3>\n      <p>ID: {id}</p>\n      <p>Major: {major}</p>\n    </div>\n  );\n}",
+        output: '<div class="mini"><h4>Mina Park</h4><p>ID: 20241077</p><p>Major: Data Science</p></div><div class="mini"><h4>Aale Aaditi</h4><p>ID: 202537195</p><p>Major: Computer Engineering</p></div>',
+        result: "Two cards, one with my student ID."
+      },
+      {
+        id: "e3",
+        badge: "E3",
+        title: "ProfileCard with a default prop",
+        file: "ProfileCard.jsx",
+        goal: "Build a card with an optional avatarUrl that has a default value.",
+        code: "function ProfileCard({ name, role, email, avatarUrl = DEFAULT_AVATAR }) {\n  return (\n    <div>\n      <img src={avatarUrl} alt={name} width=\"80\" height=\"80\" />\n      <h3>{name}</h3>\n      <p>{role}</p>\n      <a href={'mailto:' + email}>{email}</a>\n    </div>\n  );\n}",
+        output: '<div class="pcard"><svg width="80" height="80" viewBox="0 0 80 80"><rect width="80" height="80" fill="#ddd3bf"/><circle cx="40" cy="31" r="14" fill="#5c564a"/><path d="M12 80c2-18 14-28 28-28s26 10 28 28z" fill="#5c564a"/></svg><h4>Prof. Kim</h4><p>Professor</p><a href="#">prof.kim@university.edu</a></div><div class="pcard"><div class="avatar-ph">A</div><h4>Aale Aaditi</h4><p>Computer Engineering student</p><a href="#">aaditi5000@gmail.com</a></div>',
+        result: "The first card uses the default avatar, the second uses my own."
+      },
+      {
+        id: "e4",
+        badge: "E4",
+        title: "List of notifications",
+        file: "NotificationList.jsx",
+        goal: "Render an array with .map(), a stable key and an icon chosen by conditional rendering.",
+        code: "{notifications.map((n) => (\n  <NotificationItem key={n.id} type={n.type} message={n.message} />\n))}",
+        output: '<ul class="notif-list"><li class="n-success"><span>✅</span>Assignment submitted</li><li class="n-warning"><span>⚠️</span>Quiz 3 opens tomorrow</li><li class="n-info"><span>ℹ️</span>Week 12 slides posted</li></ul>',
+        result: "Three notifications with a check mark, a warning sign and an info icon."
+      },
+      {
+        id: "e5",
+        badge: "E5",
+        title: "Layout with props.children",
+        file: "Card.jsx",
+        goal: "Make one reusable Card that shows whatever is placed between its tags.",
+        code: "function Card({ title, children }) {\n  return (\n    <section>\n      <h3>{title}</h3>\n      <div>{children}</div>\n    </section>\n  );\n}",
+        output: '<div class="mini"><h4>Week 11 Topics</h4><ul><li>Components</li><li>Props</li></ul></div><div class="mini"><h4>Homework</h4><p>Build a movie review card</p></div>',
+        result: "The same component shows a list in one card and a paragraph in another."
+      },
+      {
+        id: "e6",
+        badge: "E6",
+        title: "ProductCard code challenge",
+        file: "ProductCard.jsx",
+        goal: "Build a ProductCard with name, price, rating and inStock. Show Out of Stock when inStock is false.",
+        code: "function ProductCard({ name, price, rating, inStock }) {\n  return (\n    <div>\n      <h3>{name}</h3>\n      <p>{price.toLocaleString('ko-KR')}원</p>\n      <p>{rating} / 5 stars</p>\n      <p>{inStock ? 'In Stock' : 'Out of Stock'}</p>\n    </div>\n  );\n}",
+        output: '<div class="product"><h4>Desk Lamp</h4><p class="price">32,000원</p><p class="stars">★★★★½</p><p>4.5 / 5 stars</p><p class="stock in">In Stock</p></div><div class="product"><h4>Canvas Backpack</h4><p class="price">58,000원</p><p class="stars">★★★★☆</p><p>4 / 5 stars</p><p class="stock in">In Stock</p></div><div class="product sold-out"><h4>Ceramic Mug</h4><p class="price">12,000원</p><p class="stars">★★★½☆</p><p>3.5 / 5 stars</p><p class="stock out">Out of Stock</p></div>',
+        result: "Three cards, with the Ceramic Mug marked Out of Stock and greyed out."
+      },
+      {
+        id: "e7",
+        badge: "E7",
+        title: "Rendering a list with keys",
+        file: "StudentList.jsx",
+        goal: "Render an array with .map() and give every item a unique, stable key.",
+        code: "{students.map((student) => (\n  <li key={student.id}>\n    {student.name} -- {student.grade}\n  </li>\n))}",
+        output: '<ul class="plain"><li>Choi Yuna -- A</li><li>Jung Hoon -- B+</li><li>Han Seoyeon -- A-</li></ul>',
+        result: "Three students, each keyed by its id."
+      },
+      {
+        id: "e8",
+        badge: "E8",
+        title: "Conditional rendering",
+        file: "ConditionalDemo.jsx",
+        goal: "Show different content with null, && and a ternary.",
+        code: "if (!message) return null;\n\n{user && <p>Welcome, {user.name}!</p>}\n{!user && <p>Please log in.</p>}\n\n{user ? 'Log out' : 'Log in'}",
+        output: "interactive",
+        result: "Logged out shows the error and Please log in. Logging in shows the success message and a welcome."
+      }
+    ];
+
+    const STORAGE_KEY = "practice-done";
+    const done = new Set(JSON.parse(localStorage.getItem(STORAGE_KEY) || "[]"));
+    const main = document.getElementById("tasks");
+
+    let loggedIn = false;
+    function e8Html(isLoggedIn) {
+      return (
+        (isLoggedIn ? '<div class="alert alert-success" role="status">OK: Logged in successfully.</div>' : '<div class="alert alert-error" role="status">ERROR: You are not logged in.</div>') +
+        '<div class="mini">' +
+        (isLoggedIn ? '<p>Welcome, Aaditi!</p>' : '<p>Please log in.</p>') +
+        '<button class="login-btn" type="button">' + (isLoggedIn ? 'Log out' : 'Log in') + '</button>' +
+        '</div>'
+      );
+    }
+
+    function render() {
+      main.replaceChildren(...tasks.map(makeCard));
+      updateProgress();
+    }
+
+    function makeCard(task) {
+      const card = document.createElement("article");
+      card.className = "card" + (done.has(task.id) ? " done" : "");
+
+      const head = document.createElement("div");
+      head.className = "head";
+
+      const badge = document.createElement("span");
+      badge.className = "badge";
+      badge.textContent = task.badge;
+
+      const h2 = document.createElement("h2");
+      h2.textContent = task.title;
+
+      const label = document.createElement("label");
+      label.className = "check";
+      const box = document.createElement("input");
+      box.type = "checkbox";
+      box.checked = done.has(task.id);
+      const text = document.createElement("span");
+      text.textContent = "Done";
+      label.append(box, text);
+
+      head.append(badge, h2, label);
+
+      const file = document.createElement("span");
+      file.className = "file";
+      file.textContent = task.file;
+
+      const goal = document.createElement("p");
+      goal.className = "goal";
+      goal.textContent = task.goal;
+
+      const details = document.createElement("details");
+      const summary = document.createElement("summary");
+      summary.textContent = "Show code";
+      const pre = document.createElement("pre");
+      const code = document.createElement("code");
+      code.textContent = task.code;
+      pre.appendChild(code);
+      details.append(summary, pre);
+
+      const outLabel = document.createElement("p");
+      outLabel.className = "output-label";
+      outLabel.textContent = "OUTPUT";
+
+      const out = document.createElement("div");
+      out.className = "output";
+      if (task.id === "e8") {
+        out.innerHTML = e8Html(loggedIn);
+        out.addEventListener("click", (event) => {
+          if (event.target.matches(".login-btn")) {
+            loggedIn = !loggedIn;
+            document.querySelectorAll(".output").forEach((el) => {
+              if (el.dataset.e8) el.innerHTML = e8Html(loggedIn);
+            });
+          }
+        });
+        out.dataset.e8 = "true";
+      } else {
+        out.innerHTML = task.output;
+      }
+
+      const result = document.createElement("p");
+      result.className = "result";
+      result.textContent = "Result: " + task.result;
+
+      card.append(head, file, goal, details, outLabel, out, result);
+
+      box.addEventListener("change", () => {
+        if (box.checked) done.add(task.id);
+        else done.delete(task.id);
+        localStorage.setItem(STORAGE_KEY, JSON.stringify([...done]));
+        card.classList.toggle("done", box.checked);
+        updateProgress();
+      });
+
+      return card;
+    }
+
+    function updateProgress() {
+      const total = tasks.length;
+      const count = done.size;
+      document.getElementById("count").textContent = count + " of " + total + " done";
+      document.getElementById("fill").style.width = (count / total) * 100 + "%";
+    }
+
+    render();
+  </script>
+</body>
+</html>
