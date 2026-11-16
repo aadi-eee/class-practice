@@ -1,341 +1,444 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Class practice | Aaditi</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif&family=Pinyon+Script&display=swap" rel="stylesheet">
-  <style>
-    :root {
-      --cream: #fbf1e6;
-      --ink: #2a1b1b;
-      --maroon: #6b0f1a;
-      --pink: #f4a6c4;
-      --butter: #fbeaa0;
-      --mint: #cfe9c8;
-      --sky: #d5ecf9;
-    }
-    *, *::before, *::after { box-sizing: border-box; }
-    body {
-      margin: 0;
-      background: var(--cream);
-      color: var(--ink);
-      font-family: "Instrument Serif", Georgia, serif;
-      font-size: 20px;
-      line-height: 1.5;
-    }
-    .wrap { max-width: 900px; margin: 0 auto; padding: 48px 6%; }
-    .back { color: var(--maroon); font-size: 18px; }
-    .kicker { opacity: 0.7; font-size: 16px; margin: 16px 0 0; }
-    h1 { font-weight: 400; font-size: clamp(40px, 6vw, 64px); margin: 8px 0 12px; }
-    .script { font-family: "Pinyon Script", cursive; color: var(--maroon); font-weight: 400; }
-
-    .progress { display: flex; align-items: center; gap: 12px; margin-bottom: 40px; }
-    .progress-bar { flex: 1; height: 14px; border: 2px solid var(--ink); border-radius: 999px; background: #fff; overflow: hidden; }
-    .progress-fill { height: 100%; width: 0; background: var(--pink); transition: width 0.3s ease; }
-
-    .card {
-      background: #fff;
-      padding: 24px 26px 22px;
-      margin-bottom: 36px;
-      box-shadow: 0 8px 18px rgba(0, 0, 0, 0.18);
-      border-top: 8px solid var(--pink);
-      transition: transform 0.25s ease, box-shadow 0.25s ease, opacity 0.25s ease;
-    }
-    .card:nth-child(odd) { transform: rotate(-1deg); }
-    .card:nth-child(even) { transform: rotate(1deg); }
-    .card:hover { transform: rotate(0deg) translateY(-6px) scale(1.01); box-shadow: 0 16px 32px rgba(0, 0, 0, 0.25); }
-    .card.done { opacity: 0.6; border-top-color: var(--mint); }
-    .card.done h2 { text-decoration: line-through; }
-
-    .head { display: flex; align-items: center; gap: 14px; }
-    .badge { flex-shrink: 0; background: var(--butter); border: 2px solid var(--ink); border-radius: 8px; padding: 2px 10px; font-size: 18px; }
-    .card h2 { font-weight: 400; font-size: 30px; color: var(--maroon); margin: 0; flex: 1; }
-    .check { display: flex; align-items: center; gap: 6px; font-size: 17px; cursor: pointer; user-select: none; }
-    .check input { width: 20px; height: 20px; accent-color: var(--maroon); }
-
-    .file { display: inline-block; margin: 12px 0 4px; padding: 2px 10px; border-radius: 999px; border: 1px solid var(--ink); font-size: 15px; }
-    .goal { margin: 10px 0 0; }
-
-    details { margin-top: 12px; }
-    summary { cursor: pointer; font-weight: bold; }
-    pre { background: #1e1a1a; color: #f5e9e3; padding: 14px; border-radius: 8px; overflow-x: auto; font-size: 15px; }
-
-    .output-label { margin: 16px 0 6px; font-size: 16px; opacity: 0.75; }
-    .output { border: 2px dashed var(--ink); border-radius: 10px; padding: 16px; background: #fffdf8; }
-    .output p { margin: 8px 0; }
-
-    .greeting { font-size: 26px; font-weight: 700; border: 2px dashed var(--ink); border-radius: 10px; padding: 12px 16px; margin: 10px 0; }
-
-    .mini { border: 2px solid var(--ink); border-radius: 10px; padding: 14px 16px; margin: 10px 0; background: #fff; }
-    .mini h4 { margin: 0 0 8px; font-size: 24px; font-weight: 400; color: var(--maroon); border-bottom: 2px dashed var(--ink); padding-bottom: 6px; }
-    .mini p, .mini ul { margin: 6px 0; font-size: 18px; }
-
-    .pcard { border: 2px solid var(--ink); border-radius: 10px; padding: 14px; margin: 10px 0; background: #fff; }
-    .pcard h4 { margin: 8px 0 2px; font-size: 22px; font-weight: 400; color: var(--maroon); }
-    .pcard p { margin: 2px 0; font-size: 17px; }
-    .pcard a { font-size: 16px; color: var(--maroon); }
-    .avatar-ph { width: 80px; height: 80px; border-radius: 50%; background: var(--pink); display: flex; align-items: center; justify-content: center; font-size: 36px; color: #fff; }
-
-    .notif-list { list-style: none; padding: 0; margin: 10px 0; }
-    .notif-list li { border: 2px solid var(--ink); border-radius: 10px; padding: 10px 14px; margin: 8px 0; background: #fff; font-size: 19px; }
-    .notif-list li span { margin-right: 8px; }
-    .n-success { background: var(--mint); }
-    .n-warning { background: var(--butter); }
-    .n-info { background: var(--sky); }
-
-    .product { border: 2px solid var(--ink); border-radius: 10px; padding: 14px 16px; margin: 10px 0; background: #fff; }
-    .product h4 { margin: 0 0 6px; font-size: 22px; font-weight: 400; color: var(--maroon); }
-    .product .price { font-size: 18px; margin: 2px 0; }
-    .product .stars { font-size: 18px; letter-spacing: 2px; color: var(--maroon); }
-    .product .stock { font-size: 16px; margin: 6px 0 0; }
-    .product.sold-out { opacity: 0.5; }
-    .in { color: #2e7d32; }
-    .out { color: #b71c1c; font-weight: bold; }
-
-    .plain { margin: 10px 0; padding-left: 22px; font-size: 19px; }
-
-    .alert { border-radius: 10px; padding: 10px 14px; margin: 10px 0; border: 2px solid var(--ink); font-size: 18px; }
-    .alert-error { background: #f9d0d0; }
-    .alert-success { background: var(--mint); }
-    .login-btn {
-      font: inherit; font-size: 18px; padding: 8px 18px; margin-top: 8px;
-      border: 2px solid var(--maroon); border-radius: 999px;
-      background: var(--maroon); color: #fff; cursor: pointer;
-    }
-    .login-btn:hover { background: #fff; color: var(--maroon); }
-
-    .result { margin: 12px 0 0; }
-
-    @media (prefers-reduced-motion: reduce) {
-      .card, .progress-fill { transition: none; }
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>✧ My Portfolio 2026 ✧</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@400;600;700&family=Patrick+Hand&family=Quicksand:wght@400;500;600;700&family=Sacramento&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <div class="wrap">
-    <a class="back" href="https://aadi-eee.github.io/">← Back to my assignments</a>
-    <p class="kicker">Web Programming · Week 11 · K0126_002</p>
-    <h1>Class <span class="script">practice</span></h1>
 
-    <div class="progress" aria-live="polite">
-      <span id="count">0 of 8 done</span>
-      <div class="progress-bar"><div id="fill" class="progress-fill"></div></div>
-    </div>
+    <!-- Floating Stars Background -->
+    <div class="stars-container" id="starsContainer"></div>
 
-    <h2 style="font-weight:400;font-size:36px;color:#6b0f1a;margin:0 0 20px;">Homework</h2>
+    <!-- Navigation Tabs -->
+    <nav class="tab-nav" id="tabNav">
+        <div class="nav-inner">
+            <div class="tab active" data-target="home">
+                <span class="tab-icon">🏠</span> Home
+            </div>
+            <div class="tab" data-target="about">
+                <span class="tab-icon">💖</span> About Me
+            </div>
+            <div class="tab" data-target="skills">
+                <span class="tab-icon">⭐</span> Skills
+            </div>
+            <div class="tab" data-target="projects">
+                <span class="tab-icon">📁</span> Projects
+            </div>
+            <div class="tab" data-target="contact">
+                <span class="tab-icon">✉️</span> Contact
+            </div>
+        </div>
+        <!-- Mobile hamburger -->
+        <div class="hamburger" id="hamburger">
+            <span></span><span></span><span></span>
+        </div>
+    </nav>
 
-    <article class="card">
-      <div class="head"><span class="badge">HW</span><h2>Portfolio gallery</h2></div>
-      <p class="goal">A ProjectCard, a ProjectList and a FilterBar that filters projects by tech using useState.</p>
-      <p><a href="https://week11-rho.vercel.app/" target="_blank" rel="noreferrer">Live site</a> · <a href="https://github.com/aadi-eee/week11" target="_blank" rel="noreferrer">Repository</a></p>
-    </article>
+    <!-- ==================== HOME / HERO ==================== -->
+    <section id="home" class="page active">
+        <div class="scrapbook-page cover-page">
+            <div class="lace-border top"></div>
+            <div class="polka-strip top-strip"></div>
 
-    <article class="card">
-      <div class="head"><span class="badge">HW</span><h2>Student directory</h2></div>
-      <p class="goal">A StudentProfileCard with five props, used for three students and styled with my own CSS.</p>
-      <p><a href="https://aadi-eee.github.io/student-directory/" target="_blank" rel="noreferrer">Live site</a> · <a href="https://github.com/aadi-eee/student-directory" target="_blank" rel="noreferrer">Repository</a></p>
-    </article>
+            <div class="cover-content">
+                <div class="cover-title-frame">
+                    <h1 class="cover-title">Portfolio</h1>
+                    <span class="cover-year">2026</span>
+                </div>
 
-    <h2 style="font-weight:400;font-size:36px;color:#6b0f1a;margin:40px 0 20px;">Class practice</h2>
+                <div class="polaroid-frame hero-photo">
+                    <div class="polaroid-inner">
+                        <div class="photo-placeholder">
+                            <span>📷</span>
+                            <p>Your Photo Here</p>
+                        </div>
+                    </div>
+                    <div class="tape tape-left"></div>
+                    <div class="tape tape-right"></div>
+                    <p class="polaroid-caption">✧ that's me! ✧</p>
+                </div>
 
-    <main id="tasks"></main>
-  </div>
+                <div class="hero-intro">
+                    <div class="sticky-note pink">
+                        <p class="handwriting">Hi! I'm <strong>Your Name</strong></p>
+                        <p class="handwriting-small">Web Programming Student ♡</p>
+                    </div>
+                    <div class="sticky-note mint">
+                        <p class="handwriting-small">Welcome to my digital portfolio~</p>
+                        <p class="handwriting-small">scroll down or click the tabs above! ↑</p>
+                    </div>
+                </div>
 
-  <script>
-    const tasks = [
-      {
-        id: "e1",
-        badge: "E1",
-        title: "Your first component",
-        file: "Greeting.jsx",
-        goal: "Write one function that returns JSX and use it more than once.",
-        code: "function Greeting() {\n  return <p>Hello, World!</p>;\n}\n\n<Greeting />\n<Greeting />\n<Greeting />",
-        output: '<p class="greeting">Hello, World!</p><p class="greeting">Hello, World!</p><p class="greeting">Hello, World!</p>',
-        result: "Three separate Hello, World! lines, one per use of the component."
-      },
-      {
-        id: "e2",
-        badge: "E2",
-        title: "StudentCard (fill in the blanks)",
-        file: "StudentCard.jsx",
-        goal: "Complete the card so it works with name, id and major props.",
-        code: "function StudentCard({ name, id, major }) {\n  return (\n    <div>\n      <h3>{name}</h3>\n      <p>ID: {id}</p>\n      <p>Major: {major}</p>\n    </div>\n  );\n}",
-        output: '<div class="mini"><h4>Mina Park</h4><p>ID: 20241077</p><p>Major: Data Science</p></div><div class="mini"><h4>Aale Aaditi</h4><p>ID: 202537195</p><p>Major: Computer Engineering</p></div>',
-        result: "Two cards, one with my student ID."
-      },
-      {
-        id: "e3",
-        badge: "E3",
-        title: "ProfileCard with a default prop",
-        file: "ProfileCard.jsx",
-        goal: "Build a card with an optional avatarUrl that has a default value.",
-        code: "function ProfileCard({ name, role, email, avatarUrl = DEFAULT_AVATAR }) {\n  return (\n    <div>\n      <img src={avatarUrl} alt={name} width=\"80\" height=\"80\" />\n      <h3>{name}</h3>\n      <p>{role}</p>\n      <a href={'mailto:' + email}>{email}</a>\n    </div>\n  );\n}",
-        output: '<div class="pcard"><svg width="80" height="80" viewBox="0 0 80 80"><rect width="80" height="80" fill="#ddd3bf"/><circle cx="40" cy="31" r="14" fill="#5c564a"/><path d="M12 80c2-18 14-28 28-28s26 10 28 28z" fill="#5c564a"/></svg><h4>Prof. Kim</h4><p>Professor</p><a href="#">prof.kim@university.edu</a></div><div class="pcard"><div class="avatar-ph">A</div><h4>Aale Aaditi</h4><p>Computer Engineering student</p><a href="#">aaditi5000@gmail.com</a></div>',
-        result: "The first card uses the default avatar, the second uses my own."
-      },
-      {
-        id: "e4",
-        badge: "E4",
-        title: "List of notifications",
-        file: "NotificationList.jsx",
-        goal: "Render an array with .map(), a stable key and an icon chosen by conditional rendering.",
-        code: "{notifications.map((n) => (\n  <NotificationItem key={n.id} type={n.type} message={n.message} />\n))}",
-        output: '<ul class="notif-list"><li class="n-success"><span>✅</span>Assignment submitted</li><li class="n-warning"><span>⚠️</span>Quiz 3 opens tomorrow</li><li class="n-info"><span>ℹ️</span>Week 12 slides posted</li></ul>',
-        result: "Three notifications with a check mark, a warning sign and an info icon."
-      },
-      {
-        id: "e5",
-        badge: "E5",
-        title: "Layout with props.children",
-        file: "Card.jsx",
-        goal: "Make one reusable Card that shows whatever is placed between its tags.",
-        code: "function Card({ title, children }) {\n  return (\n    <section>\n      <h3>{title}</h3>\n      <div>{children}</div>\n    </section>\n  );\n}",
-        output: '<div class="mini"><h4>Week 11 Topics</h4><ul><li>Components</li><li>Props</li></ul></div><div class="mini"><h4>Homework</h4><p>Build a movie review card</p></div>',
-        result: "The same component shows a list in one card and a paragraph in another."
-      },
-      {
-        id: "e6",
-        badge: "E6",
-        title: "ProductCard code challenge",
-        file: "ProductCard.jsx",
-        goal: "Build a ProductCard with name, price, rating and inStock. Show Out of Stock when inStock is false.",
-        code: "function ProductCard({ name, price, rating, inStock }) {\n  return (\n    <div>\n      <h3>{name}</h3>\n      <p>{price.toLocaleString('ko-KR')}원</p>\n      <p>{rating} / 5 stars</p>\n      <p>{inStock ? 'In Stock' : 'Out of Stock'}</p>\n    </div>\n  );\n}",
-        output: '<div class="product"><h4>Desk Lamp</h4><p class="price">32,000원</p><p class="stars">★★★★½</p><p>4.5 / 5 stars</p><p class="stock in">In Stock</p></div><div class="product"><h4>Canvas Backpack</h4><p class="price">58,000원</p><p class="stars">★★★★☆</p><p>4 / 5 stars</p><p class="stock in">In Stock</p></div><div class="product sold-out"><h4>Ceramic Mug</h4><p class="price">12,000원</p><p class="stars">★★★½☆</p><p>3.5 / 5 stars</p><p class="stock out">Out of Stock</p></div>',
-        result: "Three cards, with the Ceramic Mug marked Out of Stock and greyed out."
-      },
-      {
-        id: "e7",
-        badge: "E7",
-        title: "Rendering a list with keys",
-        file: "StudentList.jsx",
-        goal: "Render an array with .map() and give every item a unique, stable key.",
-        code: "{students.map((student) => (\n  <li key={student.id}>\n    {student.name} -- {student.grade}\n  </li>\n))}",
-        output: '<ul class="plain"><li>Choi Yuna -- A</li><li>Jung Hoon -- B+</li><li>Han Seoyeon -- A-</li></ul>',
-        result: "Three students, each keyed by its id."
-      },
-      {
-        id: "e8",
-        badge: "E8",
-        title: "Conditional rendering",
-        file: "ConditionalDemo.jsx",
-        goal: "Show different content with null, && and a ternary.",
-        code: "if (!message) return null;\n\n{user && <p>Welcome, {user.name}!</p>}\n{!user && <p>Please log in.</p>}\n\n{user ? 'Log out' : 'Log in'}",
-        output: "interactive",
-        result: "Logged out shows the error and Please log in. Logging in shows the success message and a welcome."
-      }
-    ];
+                <div class="deco-stars">
+                    <span class="star" style="top: 10%; left: 5%; animation-delay: 0s;">⭐</span>
+                    <span class="star" style="top: 20%; right: 8%; animation-delay: 0.5s;">✦</span>
+                    <span class="star" style="bottom: 30%; left: 12%; animation-delay: 1s;">★</span>
+                    <span class="star" style="bottom: 15%; right: 15%; animation-delay: 1.5s;">✧</span>
+                    <span class="star" style="top: 50%; left: 3%; animation-delay: 0.3s;">⭐</span>
+                    <span class="crown" style="top: 5%; right: 5%;">👑</span>
+                </div>
+            </div>
 
-    const STORAGE_KEY = "practice-done";
-    const done = new Set(JSON.parse(localStorage.getItem(STORAGE_KEY) || "[]"));
-    const main = document.getElementById("tasks");
+            <div class="polka-strip bottom-strip"></div>
+            <div class="lace-border bottom"></div>
+        </div>
+    </section>
 
-    let loggedIn = false;
-    function e8Html(isLoggedIn) {
-      return (
-        (isLoggedIn ? '<div class="alert alert-success" role="status">OK: Logged in successfully.</div>' : '<div class="alert alert-error" role="status">ERROR: You are not logged in.</div>') +
-        '<div class="mini">' +
-        (isLoggedIn ? '<p>Welcome, Aaditi!</p>' : '<p>Please log in.</p>') +
-        '<button class="login-btn" type="button">' + (isLoggedIn ? 'Log out' : 'Log in') + '</button>' +
-        '</div>'
-      );
-    }
+    <!-- ==================== ABOUT ME ==================== -->
+    <section id="about" class="page">
+        <div class="scrapbook-page about-page">
+            <div class="lace-border top"></div>
+            <div class="polka-strip top-strip"></div>
 
-    function render() {
-      main.replaceChildren(...tasks.map(makeCard));
-      updateProgress();
-    }
+            <div class="page-header">
+                <div class="header-tab pink-tab">
+                    <h2>About Me</h2>
+                    <span class="header-sub">♡ introduction ♡</span>
+                </div>
+            </div>
 
-    function makeCard(task) {
-      const card = document.createElement("article");
-      card.className = "card" + (done.has(task.id) ? " done" : "");
+            <div class="about-grid">
+                <div class="about-photo-section">
+                    <div class="polaroid-frame about-polaroid">
+                        <div class="polaroid-inner">
+                            <div class="photo-placeholder">
+                                <span>📷</span>
+                                <p>Photo</p>
+                            </div>
+                        </div>
+                        <div class="tape tape-center"></div>
+                        <p class="polaroid-caption">me! ♡</p>
+                    </div>
+                </div>
 
-      const head = document.createElement("div");
-      head.className = "head";
+                <div class="about-info-section">
+                    <div class="info-card">
+                        <h3 class="info-title">📋 Personal Info</h3>
+                        <div class="info-grid">
+                            <div class="info-item">
+                                <span class="info-label">Name:</span>
+                                <span class="info-value">Your Name</span>
+                            </div>
+                            <div class="info-item">
+                                <span class="info-label">Age:</span>
+                                <span class="info-value">20</span>
+                            </div>
+                            <div class="info-item">
+                                <span class="info-label">Course:</span>
+                                <span class="info-value">Web Programming</span>
+                            </div>
+                            <div class="info-item">
+                                <span class="info-label">Year:</span>
+                                <span class="info-value">2nd Year</span>
+                            </div>
+                            <div class="info-item">
+                                <span class="info-label">School:</span>
+                                <span class="info-value">Your University</span>
+                            </div>
+                        </div>
+                    </div>
 
-      const badge = document.createElement("span");
-      badge.className = "badge";
-      badge.textContent = task.badge;
+                    <div class="info-card">
+                        <h3 class="info-title">💭 About</h3>
+                        <p class="about-text">
+                            I'm a passionate web programming student who loves creating 
+                            beautiful and functional websites. I enjoy combining creativity 
+                            with code to build unique digital experiences. When I'm not 
+                            coding, you'll find me exploring design trends and learning 
+                            new technologies!
+                        </p>
+                    </div>
 
-      const h2 = document.createElement("h2");
-      h2.textContent = task.title;
+                    <div class="info-card">
+                        <h3 class="info-title">🌟 Hobbies</h3>
+                        <div class="hobby-tags">
+                            <span class="hobby-tag">🎨 Design</span>
+                            <span class="hobby-tag">💻 Coding</span>
+                            <span class="hobby-tag">📚 Reading</span>
+                            <span class="hobby-tag">🎵 Music</span>
+                            <span class="hobby-tag">📸 Photography</span>
+                            <span class="hobby-tag">🎮 Gaming</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
 
-      const label = document.createElement("label");
-      label.className = "check";
-      const box = document.createElement("input");
-      box.type = "checkbox";
-      box.checked = done.has(task.id);
-      const text = document.createElement("span");
-      text.textContent = "Done";
-      label.append(box, text);
+            <div class="deco-stars">
+                <span class="star" style="top: 8%; right: 10%; animation-delay: 0.2s;">✦</span>
+                <span class="star" style="bottom: 20%; left: 5%; animation-delay: 0.7s;">⭐</span>
+                <span class="star" style="top: 40%; right: 3%; animation-delay: 1.2s;">★</span>
+            </div>
 
-      head.append(badge, h2, label);
+            <div class="polka-strip bottom-strip"></div>
+            <div class="lace-border bottom"></div>
+        </div>
+    </section>
 
-      const file = document.createElement("span");
-      file.className = "file";
-      file.textContent = task.file;
+    <!-- ==================== SKILLS ==================== -->
+    <section id="skills" class="page">
+        <div class="scrapbook-page skills-page">
+            <div class="lace-border top"></div>
+            <div class="polka-strip top-strip"></div>
 
-      const goal = document.createElement("p");
-      goal.className = "goal";
-      goal.textContent = task.goal;
+            <div class="page-header">
+                <div class="header-tab mint-tab">
+                    <h2>My Skills</h2>
+                    <span class="header-sub">⭐ tech stack ⭐</span>
+                </div>
+            </div>
 
-      const details = document.createElement("details");
-      const summary = document.createElement("summary");
-      summary.textContent = "Show code";
-      const pre = document.createElement("pre");
-      const code = document.createElement("code");
-      code.textContent = task.code;
-      pre.appendChild(code);
-      details.append(summary, pre);
+            <div class="skills-container">
+                <div class="skill-folder" data-skill="HTML5">
+                    <div class="folder-tab">HTML5</div>
+                    <div class="folder-body">
+                        <div class="skill-bar-container">
+                            <div class="skill-bar" data-percent="90"></div>
+                        </div>
+                        <p class="skill-desc">Semantic markup, forms, accessibility</p>
+                        <span class="skill-level">Advanced ⭐⭐⭐⭐⭐</span>
+                    </div>
+                </div>
 
-      const outLabel = document.createElement("p");
-      outLabel.className = "output-label";
-      outLabel.textContent = "OUTPUT";
+                <div class="skill-folder" data-skill="CSS3">
+                    <div class="folder-tab">CSS3</div>
+                    <div class="folder-body">
+                        <div class="skill-bar-container">
+                            <div class="skill-bar" data-percent="85"></div>
+                        </div>
+                        <p class="skill-desc">Flexbox, Grid, animations, responsive</p>
+                        <span class="skill-level">Advanced ⭐⭐⭐⭐</span>
+                    </div>
+                </div>
 
-      const out = document.createElement("div");
-      out.className = "output";
-      if (task.id === "e8") {
-        out.innerHTML = e8Html(loggedIn);
-        out.addEventListener("click", (event) => {
-          if (event.target.matches(".login-btn")) {
-            loggedIn = !loggedIn;
-            document.querySelectorAll(".output").forEach((el) => {
-              if (el.dataset.e8) el.innerHTML = e8Html(loggedIn);
-            });
-          }
-        });
-        out.dataset.e8 = "true";
-      } else {
-        out.innerHTML = task.output;
-      }
+                <div class="skill-folder" data-skill="JavaScript">
+                    <div class="folder-tab">JavaScript</div>
+                    <div class="folder-body">
+                        <div class="skill-bar-container">
+                            <div class="skill-bar" data-percent="75"></div>
+                        </div>
+                        <p class="skill-desc">DOM manipulation, events, ES6+</p>
+                        <span class="skill-level">Intermediate ⭐⭐⭐</span>
+                    </div>
+                </div>
 
-      const result = document.createElement("p");
-      result.className = "result";
-      result.textContent = "Result: " + task.result;
+                <div class="skill-folder" data-skill="Python">
+                    <div class="folder-tab">Python</div>
+                    <div class="folder-body">
+                        <div class="skill-bar-container">
+                            <div class="skill-bar" data-percent="70"></div>
+                        </div>
+                        <p class="skill-desc">Scripting, data handling, basics</p>
+                        <span class="skill-level">Intermediate ⭐⭐⭐</span>
+                    </div>
+                </div>
 
-      card.append(head, file, goal, details, outLabel, out, result);
+                <div class="skill-folder" data-skill="Git">
+                    <div class="folder-tab">Git & GitHub</div>
+                    <div class="folder-body">
+                        <div class="skill-bar-container">
+                            <div class="skill-bar" data-percent="65"></div>
+                        </div>
+                        <p class="skill-desc">Version control, collaboration</p>
+                        <span class="skill-level">Intermediate ⭐⭐⭐</span>
+                    </div>
+                </div>
 
-      box.addEventListener("change", () => {
-        if (box.checked) done.add(task.id);
-        else done.delete(task.id);
-        localStorage.setItem(STORAGE_KEY, JSON.stringify([...done]));
-        card.classList.toggle("done", box.checked);
-        updateProgress();
-      });
+                <div class="skill-folder" data-skill="Design">
+                    <div class="folder-tab">UI/UX Design</div>
+                    <div class="folder-body">
+                        <div class="skill-bar-container">
+                            <div class="skill-bar" data-percent="80"></div>
+                        </div>
+                        <p class="skill-desc">Figma, color theory, layout design</p>
+                        <span class="skill-level">Advanced ⭐⭐⭐⭐</span>
+                    </div>
+                </div>
+            </div>
 
-      return card;
-    }
+            <div class="deco-stars">
+                <span class="star" style="top: 12%; left: 8%; animation-delay: 0.4s;">✧</span>
+                <span class="star" style="bottom: 25%; right: 6%; animation-delay: 0.9s;">⭐</span>
+            </div>
 
-    function updateProgress() {
-      const total = tasks.length;
-      const count = done.size;
-      document.getElementById("count").textContent = count + " of " + total + " done";
-      document.getElementById("fill").style.width = (count / total) * 100 + "%";
-    }
+            <div class="polka-strip bottom-strip"></div>
+            <div class="lace-border bottom"></div>
+        </div>
+    </section>
 
-    render();
-  </script>
+    <!-- ==================== PROJECTS ==================== -->
+    <section id="projects" class="page">
+        <div class="scrapbook-page projects-page">
+            <div class="lace-border top"></div>
+            <div class="polka-strip top-strip"></div>
+
+            <div class="page-header">
+                <div class="header-tab pink-tab">
+                    <h2>My Projects</h2>
+                    <span class="header-sub">📁 portfolio works 📁</span>
+                </div>
+            </div>
+
+            <div class="projects-container">
+                <!-- Project Step Cards (like the reference) -->
+                <div class="step-card">
+                    <div class="step-number">Step 1</div>
+                    <div class="step-content">
+                        <h3>Personal Portfolio Website</h3>
+                        <p>Designed and developed this Y2K-themed portfolio website using HTML, CSS, and JavaScript with responsive design.</p>
+                        <div class="step-tags">
+                            <span>HTML</span><span>CSS</span><span>JavaScript</span>
+                        </div>
+                        <a href="#" class="step-link">View Project →</a>
+                    </div>
+                    <div class="tape tape-corner"></div>
+                </div>
+
+                <div class="step-card">
+                    <div class="step-number">Step 2</div>
+                    <div class="step-content">
+                        <h3>To-Do List App</h3>
+                        <p>An interactive task management application with local storage persistence and drag-and-drop functionality.</p>
+                        <div class="step-tags">
+                            <span>JavaScript</span><span>Local Storage</span>
+                        </div>
+                        <a href="#" class="step-link">View Project →</a>
+                    </div>
+                    <div class="tape tape-corner"></div>
+                </div>
+
+                <div class="step-card">
+                    <div class="step-number">Step 3</div>
+                    <div class="step-content">
+                        <h3>Landing Page Design</h3>
+                        <p>A responsive mobile-first landing page for a fictional brand using CSS Grid and Flexbox.</p>
+                        <div class="step-tags">
+                            <span>HTML</span><span>CSS</span><span>Responsive</span>
+                        </div>
+                        <a href="#" class="step-link">View Project →</a>
+                    </div>
+                    <div class="tape tape-corner"></div>
+                </div>
+
+                <div class="step-card">
+                    <div class="step-number">Step 4</div>
+                    <div class="step-content">
+                        <h3>Quiz Game</h3>
+                        <p>An interactive web-based quiz game with score tracking and timer functionality.</p>
+                        <div class="step-tags">
+                            <span>JavaScript</span><span>DOM</span><span>CSS</span>
+                        </div>
+                        <a href="#" class="step-link">View Project →</a>
+                    </div>
+                    <div class="tape tape-corner"></div>
+                </div>
+
+                <div class="step-card">
+                    <div class="step-number">Step 5</div>
+                    <div class="step-content">
+                        <h3>Calculator App</h3>
+                        <p>A fully functional calculator with keyboard support and a clean, modern UI design.</p>
+                        <div class="step-tags">
+                            <span>HTML</span><span>CSS</span><span>JavaScript</span>
+                        </div>
+                        <a href="#" class="step-link">View Project →</a>
+                    </div>
+                    <div class="tape tape-corner"></div>
+                </div>
+            </div>
+
+            <div class="deco-stars">
+                <span class="star" style="top: 5%; right: 12%; animation-delay: 0.6s;">★</span>
+                <span class="star" style="bottom: 10%; left: 8%; animation-delay: 1.1s;">✦</span>
+            </div>
+
+            <div class="polka-strip bottom-strip"></div>
+            <div class="lace-border bottom"></div>
+        </div>
+    </section>
+
+    <!-- ==================== CONTACT ==================== -->
+    <section id="contact" class="page">
+        <div class="scrapbook-page contact-page">
+            <div class="lace-border top"></div>
+            <div class="polka-strip top-strip"></div>
+
+            <div class="page-header">
+                <div class="header-tab mint-tab">
+                    <h2>Contact Me</h2>
+                    <span class="header-sub">✉️ let's connect ✉️</span>
+                </div>
+            </div>
+
+            <div class="contact-container">
+                <div class="contact-info-card">
+                    <h3>📫 Get In Touch!</h3>
+                    <div class="contact-items">
+                        <div class="contact-item">
+                            <span class="contact-icon">📧</span>
+                            <span class="contact-text">yourname@email.com</span>
+                        </div>
+                        <div class="contact-item">
+                            <span class="contact-icon">📱</span>
+                            <span class="contact-text">+63 912 345 6789</span>
+                        </div>
+                        <div class="contact-item">
+                            <span class="contact-icon">📍</span>
+                            <span class="contact-text">Your City, Philippines</span>
+                        </div>
+                    </div>
+                    <div class="social-links">
+                        <a href="#" class="social-btn facebook">Facebook</a>
+                        <a href="#" class="social-btn instagram">Instagram</a>
+                        <a href="#" class="social-btn github">GitHub</a>
+                    </div>
+                </div>
+
+                <div class="contact-form-card">
+                    <h3>💌 Send me a message~</h3>
+                    <form id="contactForm" class="y2k-form">
+                        <div class="form-group">
+                            <label for="name">Name ♡</label>
+                            <input type="text" id="name" placeholder="What's your name?" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="email">Email ♡</label>
+                            <input type="email" id="email" placeholder="Your email address" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="message">Message ♡</label>
+                            <textarea id="message" rows="4" placeholder="Write something nice~" required></textarea>
+                        </div>
+                        <button type="submit" class="submit-btn">
+                            ✉️ Send Message ✧
+                        </button>
+                        <p class="form-feedback" id="formFeedback"></p>
+                    </form>
+                </div>
+            </div>
+
+            <div class="deco-stars">
+                <span class="star" style="top: 15%; left: 5%; animation-delay: 0.3s;">⭐</span>
+                <span class="star" style="bottom: 20%; right: 8%; animation-delay: 0.8s;">✧</span>
+            </div>
+
+            <div class="polka-strip bottom-strip"></div>
+            <div class="lace-border bottom"></div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="y2k-footer">
+        <div class="polka-strip footer-strip"></div>
+        <p>✧ Made with ♡ by <strong>Your Name</strong> · 2026 ✧</p>
+        <p class="footer-small">Web Programming Portfolio Assignment</p>
+    </footer>
+
+    <script src="script.js"></script>
 </body>
 </html>
